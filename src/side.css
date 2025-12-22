@@ -1,0 +1,4 @@
+.work:hover{
+    background-color: grey;
+    transition:0.2s ease-in-out;
+}
