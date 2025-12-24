@@ -5,6 +5,7 @@ import Dish from './dish/dishboard';
 import Create from './createPost/create';
 import {BrowserRouter , Routes, Route} from 'react-router-dom';
 import View from './preview/view';
+import Chanel from './youtube/autoredirect';
 
 
 const Childdern = ({myPages, myInsta, igIdData}) => {
@@ -15,6 +16,7 @@ const Childdern = ({myPages, myInsta, igIdData}) => {
         <Route path="/" element={<Dish facebookPages={myPages} myInsta={myInsta} IgIddigit={igIdData}/>}/>
         <Route path="/create" element={<Create postIgId={igIdData}/>}/>
         <Route path="/view" element={<View/>}/>
+        <Route path="/youtubeChanel" element={<Chanel/>}/>
         <Route path="/linked/work" element={<Linked/>}/>
       </Routes>
     

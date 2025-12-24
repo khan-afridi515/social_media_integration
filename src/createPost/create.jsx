@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from  'axios';
+
 
 const Create = ({postIgId}) => {
     const [facebook, setFacebook] = useState(false);
@@ -10,6 +11,18 @@ const Create = ({postIgId}) => {
     const [myText, setMyText] = useState("");
     const [video, setVideo] = useState(null);
 
+  
+    const myRef = useRef();
+
+    //youtube states
+    const [channels, setChannels] = useState([]);
+    const [channel, setChannel] = useState("");
+    // const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [privacyStatus, setPrivacyStatus] = useState("private");
+    const [madeForKids, setMadeForKids] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     
     const facebookPagetoken = localStorage.getItem("pageToken");
     const facebookPageId = localStorage.getItem("pageId");
@@ -18,6 +31,18 @@ const Create = ({postIgId}) => {
     const fileInputRef = useRef(null);
     const videoInputRef = useRef(null);
 
+
+    useEffect(() => {
+      const storedData = localStorage.getItem("youtubeChannelData");
+    
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        console.log("YouTube channel data:", parsedData);
+        setChannels(parsedData);
+        // example: set state
+        // setChannels(parsedData);
+      }
+    }, []);
 
     const handleImageClick = () => {
         fileInputRef.current.click();
@@ -110,8 +135,29 @@ const Create = ({postIgId}) => {
         }
 
         if(youtube && myText){
-            console.log("Posted to Youtube:", myText, image);
-        }
+            const uploadUrl = "http://localhost:3000/api/youtube/shareVideo";
+
+            const uploadForm = new FormData();
+
+            uploadForm.append("channel", channel),
+            uploadForm.append("title", myText),
+            uploadForm.append("description", description),
+            uploadForm.append("privacyStatus", privacyStatus),
+            uploadForm.append("madeForKids", madeForKids),
+            uploadForm.append("video", video),
+
+            console.log("video details2:", channel, description, myText, privacyStatus, madeForKids, video,  "uploadUrl:",uploadUrl);
+            axios.post(uploadUrl, uploadForm,
+                    {
+                      headers: {
+                        "Content-Type": "multipart/form-data"
+                      },
+                    })
+                  .then((res)=>{
+                    console.log(res.data);
+                  })
+        
+          }
 
         if(!facebook && !instagram && !linkedIn && !youtube){
             alert("Please check a box first!");
@@ -121,8 +167,32 @@ const Create = ({postIgId}) => {
         setImage(null);
     }
 
+
+ 
+
+   useEffect(()=>{
+    if(youtube){
+      myRef.current.style.display="block";
+    }
+   },[youtube])
+
+    const formShow = () => {
+        myRef.current.style.display="none";
+    }
+
+    const complete = () => {
+      if(channel && description && privacyStatus && madeForKids!==null){
+      
+        myRef.current.style.display="none";
+        console.log("video details:", channel, description, privacyStatus, madeForKids);
+      }
+      else{
+        alert("Please fill all the fields");
+      }
+    }
+
   return (
-    <div className='w-full px-4 py-8'>
+    <div className='w-full px-4 py-8 relative'>
       <div className='flex flex-col gap-6'>
         <div>
             <h1 className='text-2xl font-bold'>Create Post</h1>
@@ -177,6 +247,149 @@ const Create = ({postIgId}) => {
             <button className='bg-blue-600 text-white px-3 py-1 rounded-md' onClick={sharePost}>Publish</button>
         </div>
       </div>
+
+
+
+  {/*Data for youtube*/}
+
+<div className='w-[100%] absolute top-0 left-5 hidden' ref={myRef}>
+<form
+  className="max-w-2xl mx-auto mt-10 p-6 bg-white dark relative:bg-gray-900 rounded-2xl shadow-lg space-y-6"
+>
+    <button type="button" className='text-3xl text-green-500 absolute top-20 right-60 cursor-pointer ' onClick={formShow}>X</button>
+  <h2 className="text-2xl font-semibold text-gray-800 dark:text-white text-center">
+    Upload YouTube Video
+  </h2>
+
+  {/* Channel */}
+  <div className="space-y-1">
+    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+      Select Channel
+    </label>
+
+
+  <select
+  value={channel}
+  onChange={e => setChannel(e.target.value)}
+  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700
+             bg-gray-50 dark:bg-gray-800
+             text-gray-800 dark:text-white
+             focus:outline-none focus:ring-2 focus:ring-red-500"
+>
+  <option value="">Choose a channel</option>
+  {channels.map(ch => (
+    <option key={ch.channel} value={ch.channel}>
+      {ch.channelTitle}
+    </option>
+  ))}
+
+
+
+</select>
+
+  </div>
+
+  {/* Title */}
+  {/* <div className="space-y-1">
+    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+      Video Title
+    </label>
+    <input
+      type="text"
+      placeholder="Enter video title"
+      value={title}
+      onChange={e => setTitle(e.target.value)}
+      className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+      required
+    />
+  </div> */}
+
+  {/* Description */}
+  <div className="space-y-1">
+    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+      Description
+    </label>
+    <textarea
+      rows={4}
+      placeholder="Write video description"
+      value={description}
+      onChange={e => setDescription(e.target.value)}
+      className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+    />
+  </div>
+
+  {/* Privacy & Audience */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {/* Privacy */}
+    <div className="space-y-1">
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Privacy
+      </label>
+      <select
+        value={privacyStatus}
+        onChange={e => setPrivacyStatus(e.target.value)}
+        className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+      >
+
+
+        <option value="private">Private</option>
+        <option value="public">Public</option>
+        <option value="unlisted">Unlisted</option>
+      </select>
+    </div>
+
+    {/* Audience */}
+    <div className="space-y-1">
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Audience
+      </label>
+      <select
+        value={madeForKids}
+        onChange={e => setMadeForKids(e.target.value === "true")}
+        className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500"
+      >
+        <option value="false">Not made for kids</option>
+        <option value="true">Made for kids</option>
+      </select>
+    </div>
+  </div>
+
+
+
+  {/* Video Upload */}
+  {/* <div className="space-y-1">
+    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+      Upload Video
+    </label>
+    <input
+      type="file"
+      accept="video/*"
+      onChange={e => setVideo(e.target.files[0])}
+      className="block w-full text-sm text-gray-600 dark:text-gray-300
+        file:mr-4 file:py-2 file:px-4
+        file:rounded-lg file:border-0
+        file:text-sm file:font-semibold
+        file:bg-red-50 file:text-red-600
+        hover:file:bg-red-100"
+      required
+    />
+  </div> */}
+
+
+
+  {/* Submit */}
+  <button
+    type="button"
+    disabled={loading}
+    className="w-full py-3 rounded-lg bg-red-600 text-white font-semibold
+      hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+      onClick={complete}
+  >
+   Done
+  </button>
+</form>
+</div>
+
     </div>
   )
 }

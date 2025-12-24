@@ -57,6 +57,12 @@ const Dish = ({facebookPages, myInsta, IgIddigit}) => {
   }
 
 
+  const connectYoutube = () => {
+    window.location.href = "http://localhost:3000/api/youtube/connectedYoutube";
+  }
+
+  
+
   return (
     <div className='px-2 py-3 w-full'>
       <div className='py-1 w-full'>
@@ -100,7 +106,7 @@ const Dish = ({facebookPages, myInsta, IgIddigit}) => {
                <img src="platform/youtube.png" className="w-full h-40 object-cover rounded-md" alt="" />
                <p className='font-bold text-sm'>Youtube</p>
                <p className='text-sm'>Connect your youtube account</p>
-               <button className='text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white'>Connect</button>
+               <button className='text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white' onClick={connectYoutube}>Connect</button>
             </div>
 
         </div>
