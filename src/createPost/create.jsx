@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from  'axios';
 
 
-const Create = ({postIgId}) => {
+const Create = ({postIgId, myChannelData}) => {
     const [facebook, setFacebook] = useState(false);
     const [instagram, setInstagram] = useState(false);
     const [linkedIn, setLinkedIn] = useState(false);
@@ -32,17 +32,17 @@ const Create = ({postIgId}) => {
     const videoInputRef = useRef(null);
 
 
-    useEffect(() => {
-      const storedData = localStorage.getItem("youtubeChannelData");
+    // useEffect(() => {
+    //   const storedData = localStorage.getItem("youtubeChannelData");
     
-      if (storedData) {
-        const parsedData = JSON.parse(storedData);
-        console.log("YouTube channel data:", parsedData);
-        setChannels(parsedData);
-        // example: set state
-        // setChannels(parsedData);
-      }
-    }, []);
+    //   if (storedData) {
+    //     const parsedData = JSON.parse(storedData);
+    //     console.log("YouTube channel data:", parsedData);
+    //     setChannels(parsedData);
+    //     // example: set state
+    //     // setChannels(parsedData);
+    //   }
+    // }, []);
 
     const handleImageClick = () => {
         fileInputRef.current.click();
@@ -134,7 +134,11 @@ const Create = ({postIgId}) => {
               
         }
 
-        if(youtube && myText){
+
+
+
+
+        if(youtube && myText && video){
             const uploadUrl = "http://localhost:3000/api/youtube/shareVideo";
 
             const uploadForm = new FormData();
@@ -184,7 +188,7 @@ const Create = ({postIgId}) => {
       if(channel && description && privacyStatus && madeForKids!==null){
       
         myRef.current.style.display="none";
-        console.log("video details:", channel, description, privacyStatus, madeForKids);
+        console.log("video details:", channel, description, privacyStatus, madeForKids, myChannelData);
       }
       else{
         alert("Please fill all the fields");
@@ -277,11 +281,11 @@ const Create = ({postIgId}) => {
              focus:outline-none focus:ring-2 focus:ring-red-500"
 >
   <option value="">Choose a channel</option>
-  {channels.map(ch => (
+  {myChannelData ? (myChannelData.map(ch => (
     <option key={ch.channel} value={ch.channel}>
       {ch.channelTitle}
     </option>
-  ))}
+  ))):(<option value="">No Channel Available</option>)}
 
 
 

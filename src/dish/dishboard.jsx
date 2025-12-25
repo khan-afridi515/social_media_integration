@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
-const Dish = ({facebookPages, myInsta, IgIddigit}) => {
+const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) => {
 
   
 
@@ -106,7 +106,11 @@ const Dish = ({facebookPages, myInsta, IgIddigit}) => {
                <img src="platform/youtube.png" className="w-full h-40 object-cover rounded-md" alt="" />
                <p className='font-bold text-sm'>Youtube</p>
                <p className='text-sm'>Connect your youtube account</p>
-               <button className='text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white' onClick={connectYoutube}>Connect</button>
+               <div className='flex gap-1 w-full'>
+               <button className={channelData ? 'text-sm px-1 py-1 bg-red-700 w-25 rounded-md text-white':'text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white'} onClick={connectYoutube}>{channelData ? "Connected":"Connect"}</button>
+               <button type="button" className='text-sm px-1 py-1 bg-green-700 w-25 rounded-md text-white' onClick={finishChannel}>Disconnect</button>
+               </div>
+               
             </div>
 
         </div>
