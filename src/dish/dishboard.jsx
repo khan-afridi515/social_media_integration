@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { use, useRef, useState } from 'react'
 import { Link } from 'react-router-dom';
+
 
 const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) => {
 
@@ -9,6 +10,8 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) =
     window.open("https://www.linkedin.com/company/110089937/", "_blank");
 
   }
+
+  const [IdChannel, setIdChannel] = useState('');
 
   const handlelinkedInLogin = () => {
     const params = new URLSearchParams({
@@ -61,6 +64,21 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) =
     window.location.href = "http://localhost:3000/api/youtube/connectedYoutube";
   }
 
+  const showRef = useRef();
+
+  const showChannel = () => {
+    showRef.current.style.display = "block";
+  }
+
+
+  const channelAccess = () => {
+    console.log(IdChannel);
+    showRef.current.style.display = "none";
+
+    const url = `https://www.youtube.com/channel/${IdChannel}`;
+    
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
   
 
   return (
@@ -102,13 +120,30 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) =
                
             </div>
 
-            <div className='md:w-[23%] sm:w-[31%] w-[48%] flex flex-col gap-1'>
-               <img src="platform/youtube.png" className="w-full h-40 object-cover rounded-md" alt="" />
+            <div className='relative md:w-[23%] sm:w-[31%] w-[48%] flex flex-col gap-1'>
+               <img src="platform/youtube.png" className="w-full h-40 object-cover rounded-md cursor-pointer" onClick={showChannel} alt="" />
                <p className='font-bold text-sm'>Youtube</p>
                <p className='text-sm'>Connect your youtube account</p>
                <div className='flex gap-1 w-full'>
-               <button className={channelData ? 'text-sm px-1 py-1 bg-red-700 w-25 rounded-md text-white':'text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white'} onClick={connectYoutube}>{channelData ? "Connected":"Connect"}</button>
-               <button type="button" className='text-sm px-1 py-1 bg-green-700 w-25 rounded-md text-white' onClick={finishChannel}>Disconnect</button>
+               <button className={channelData ? 'text-sm px-1 py-1 bg-red-700 w-25 rounded-md text-white cursor-pointer':'cursor-pointer text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white'} onClick={connectYoutube}>{channelData ? "Connected":"Connect"}</button>
+               <button type="button" className='text-sm px-1 py-1 bg-green-700 w-25 rounded-md text-white cursor-pointer' onClick={finishChannel}>Disconnect</button>
+               
+               <div className='hidden' ref={showRef}>
+               <div className='absolute top-2 left-2 flex gap-1 flex-col' >
+               <select name=""  value={IdChannel} className="px-3 py-2 border-1 " onChange={(e)=>setIdChannel(e.target.value)} id="">
+                <option className="py-1 px-3 text-black" value="">Choose channel</option>
+                {channelData ? (channelData.map((ch) => {
+                  return(
+
+                    <option className="py-1 px-3 text-black" value={ch.channel}>{ch.channelTitle}</option>
+                  )})) : (<option value="" className='py-1 px-3 text-black'>No Channel Here</option>)}
+               </select>
+               <button type="button" className='py-1 px-3 text-black border-1 cursor-pointer' onClick={channelAccess}>Done</button>
+               </div>
+               </div>
+               
+              
+
                </div>
                
             </div>

@@ -17,7 +17,6 @@ const Create = ({postIgId, myChannelData}) => {
     //youtube states
     const [channels, setChannels] = useState([]);
     const [channel, setChannel] = useState("");
-    // const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [privacyStatus, setPrivacyStatus] = useState("private");
     const [madeForKids, setMadeForKids] = useState(false);
@@ -31,18 +30,6 @@ const Create = ({postIgId, myChannelData}) => {
     const fileInputRef = useRef(null);
     const videoInputRef = useRef(null);
 
-
-    // useEffect(() => {
-    //   const storedData = localStorage.getItem("youtubeChannelData");
-    
-    //   if (storedData) {
-    //     const parsedData = JSON.parse(storedData);
-    //     console.log("YouTube channel data:", parsedData);
-    //     setChannels(parsedData);
-    //     // example: set state
-    //     // setChannels(parsedData);
-    //   }
-    // }, []);
 
     const handleImageClick = () => {
         fileInputRef.current.click();
@@ -81,15 +68,19 @@ const Create = ({postIgId, myChannelData}) => {
     })
     .then((res)=>{
       console.log("This is facebook response", res);
-    //   if(res) alert("Posted to Facebook Successfully Done!");
+      if(res) alert("Posted to Facebook Successfully Done!");
+    }).catch*((err)=>{
+        console.error("Error posting to Facebook:", err);
+        alert("Failed to post to Facebook.");
     })
              
 
     }
 
 
-
-        if(instagram && myText && postIgId){
+       
+        const media = image || video;
+        if(instagram && myText && postIgId && media){
             const instaUrl = "http://localhost:3001/app/facebook/instagramPost";
             const instaFormData = new FormData();
             instaFormData.append("caption", myText);
@@ -107,7 +98,11 @@ const Create = ({postIgId, myChannelData}) => {
               })
             .then((res)=>{
                 console.log("This is Instagram responns", res);
-            })
+                alert("Video uploaded to Instagram successfully Done!");
+            }).catch*((err)=>{
+              console.error("Error posting to Instagram:", err);
+              alert("Failed to post to Instagram.");
+          })
 
         }
 
@@ -128,8 +123,11 @@ const Create = ({postIgId, myChannelData}) => {
             axios.post (shareUrl, newformData)
                 .then((res)=>{
                   console.log("post shared from linkedIn:", res);
-                //   alert("Posted to linkedIn successfully Done!");
-                })
+                  alert("Video uploaded to linkedIn successfully Done!");
+                }).catch*((err)=>{
+                  console.error("Error posting to LinkedIn:", err);
+                  alert("Failed to post to LinkedIn.");
+              })
           
               
         }
@@ -159,7 +157,12 @@ const Create = ({postIgId, myChannelData}) => {
                     })
                   .then((res)=>{
                     console.log(res.data);
-                  })
+                    alert("Video uploaded to YouTube successfully Done!");
+                  }).catch*((err)=>{
+                    console.error("Error posting to Youtube:", err);
+                    alert("Failed to post to Youtube.");
+                })
+
         
           }
 
@@ -256,144 +259,54 @@ const Create = ({postIgId, myChannelData}) => {
 
   {/*Data for youtube*/}
 
-<div className='w-[100%] absolute top-0 left-5 hidden' ref={myRef}>
-<form
-  className="max-w-2xl mx-auto mt-10 p-6 bg-white dark relative:bg-gray-900 rounded-2xl shadow-lg space-y-6"
->
-    <button type="button" className='text-3xl text-green-500 absolute top-20 right-60 cursor-pointer ' onClick={formShow}>X</button>
-  <h2 className="text-2xl font-semibold text-gray-800 dark:text-white text-center">
-    Upload YouTube Video
-  </h2>
+<div className='w-100 border border-1 py-3 px-2 absolute top-30 left-60 bg-white hidden' ref={myRef}>
+  <form action="" className='w-full relative'>
+    <div className='w-full'>
 
-  {/* Channel */}
-  <div className="space-y-1">
-    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-      Select Channel
-    </label>
+      <button type="button" className='w-20 absolute top-1 right-0' onClick={formShow}><i className="fa-sharp-duotone fa-regular fa-circle-xmark w-full text-xl cursor-pointer"></i></button>
+      <h1 className='text-center text-2xl font-bold'>Upload Video</h1>
 
+      <div className='flex flex-col gap-3 py-3 w-full'>
+        <div className='flex flex-col gap-1 w-full'>
+          <label htmlFor="" className='text-sm'>Select a Channel</label>
+          <select name="" id="" value={channel} onChange={(e)=>setChannel(e.target.value)} className='border border-1 p-1 text-black'>
+            <option value="">Choose a channel</option>
+            {myChannelData ? (myChannelData.map(ch => (
+                <option key={ch.channel} value={ch.channel} className='text-black'>{ch.channelTitle}</option>
 
-  <select
-  value={channel}
-  onChange={e => setChannel(e.target.value)}
-  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700
-             bg-gray-50 dark:bg-gray-800
-             text-gray-800 dark:text-white
-             focus:outline-none focus:ring-2 focus:ring-red-500"
->
-  <option value="">Choose a channel</option>
-  {myChannelData ? (myChannelData.map(ch => (
-    <option key={ch.channel} value={ch.channel}>
-      {ch.channelTitle}
-    </option>
-  ))):(<option value="">No Channel Available</option>)}
+              ))):(<option value="" className='text-black'>No channel Available</option>)
+            }
+          </select>
+        </div>
 
+        <div className='flex flex-col gap-1 w-full'>
+          <label htmlFor="" className='text-sm'>Description</label>
+          <textarea name="" id="" value={description} onChange={(e)=>setDescription(e.target.value)} className='w-full h-15 px-1 py-2 border border-1 text-sm'></textarea>
+        </div>
 
+        <div className='w-full flex gap-2'>
+          <div className='w-[49%]'>
+          <label htmlFor="" className='text-sm'>Privacy</label>
+            <select name="" id="" value={privacyStatus} onChange={(e)=>setPrivacyStatus(e.target.value)}className='border border-1 p-1 w-full'>
+              <option value="private">Private</option>
+              <option value="public">Public</option>
+              <option value="unlisted">Unlisted</option>
+            </select>
+          </div>
+          <div className='w-[49%]'>
+            <label htmlFor="" className='text-sm'>Permission</label>
+            <select name="" id="" value={madeForKids} onChange={(e)=>setMadeForKids(e.target.value === "true")} className='border border-1 p-1 w-full'>
+              <option value="false">No made for kids</option>
+              <option value="true">made for kids</option>
+            </select>
+          </div>
+        </div>
 
-</select>
-
-  </div>
-
-  {/* Title */}
-  {/* <div className="space-y-1">
-    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-      Video Title
-    </label>
-    <input
-      type="text"
-      placeholder="Enter video title"
-      value={title}
-      onChange={e => setTitle(e.target.value)}
-      className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500"
-      required
-    />
-  </div> */}
-
-  {/* Description */}
-  <div className="space-y-1">
-    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-      Description
-    </label>
-    <textarea
-      rows={4}
-      placeholder="Write video description"
-      value={description}
-      onChange={e => setDescription(e.target.value)}
-      className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
-    />
-  </div>
-
-  {/* Privacy & Audience */}
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    {/* Privacy */}
-    <div className="space-y-1">
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-        Privacy
-      </label>
-      <select
-        value={privacyStatus}
-        onChange={e => setPrivacyStatus(e.target.value)}
-        className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500"
-      >
-
-
-        <option value="private">Private</option>
-        <option value="public">Public</option>
-        <option value="unlisted">Unlisted</option>
-      </select>
+      </div>
+        <div className='w-full bg-gray-600 p-1'><button type="button" onClick={complete} className='w-full text-white'>Done</button></div>
     </div>
-
-    {/* Audience */}
-    <div className="space-y-1">
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-        Audience
-      </label>
-      <select
-        value={madeForKids}
-        onChange={e => setMadeForKids(e.target.value === "true")}
-        className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500"
-      >
-        <option value="false">Not made for kids</option>
-        <option value="true">Made for kids</option>
-      </select>
-    </div>
-  </div>
-
-
-
-  {/* Video Upload */}
-  {/* <div className="space-y-1">
-    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-      Upload Video
-    </label>
-    <input
-      type="file"
-      accept="video/*"
-      onChange={e => setVideo(e.target.files[0])}
-      className="block w-full text-sm text-gray-600 dark:text-gray-300
-        file:mr-4 file:py-2 file:px-4
-        file:rounded-lg file:border-0
-        file:text-sm file:font-semibold
-        file:bg-red-50 file:text-red-600
-        hover:file:bg-red-100"
-      required
-    />
-  </div> */}
-
-
-
-  {/* Submit */}
-  <button
-    type="button"
-    disabled={loading}
-    className="w-full py-3 rounded-lg bg-red-600 text-white font-semibold
-      hover:bg-red-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
-      onClick={complete}
-  >
-   Done
-  </button>
-</form>
+  </form>
 </div>
-
     </div>
   )
 }
