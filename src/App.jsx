@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import Join from './join'
+
 // import { auth, provider, storage } from './firebase';
 import { FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
 import { fbProvider, myAuth } from './facebook/face';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import Join2 from './join2';
 
 
 const App = () => {
@@ -75,7 +76,8 @@ const App = () => {
 
   return (
     <div>
-      <Join givePages={showPages}  Instawork={InstaConnect} igId={MyIgId} />
+      {/* <Join givePages={showPages}  Instawork={InstaConnect} igId={MyIgId} /> */}
+      <Join2 givePages={showPages}  Instawork={InstaConnect} igId={MyIgId} />
     </div>
   )
 }
