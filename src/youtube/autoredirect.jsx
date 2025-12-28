@@ -1,6 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const Chanel = () => {
+
+  const nav = useNavigate();
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      nav('/');
+    }, 4000)
+  },[])
 
   useEffect(() => {
     axios.get("http://localhost:3000/api/youtube/gettingChannel")
@@ -15,8 +25,10 @@ const Chanel = () => {
   return (
     <>
       
+    <div className="w-[100%] h-[100vh] flex justify-center items-center">
 
     <h1 className="text-3xl font-bold">Youtube channel connected Successfully!</h1>
+    </div>
 
     </>
   )
