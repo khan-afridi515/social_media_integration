@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) => {
 
+  const [IdChannel, setIdChannel] = useState('');
   
 
   const  openLinkedIn = () => {
@@ -11,7 +12,6 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) =
 
   }
 
-  const [IdChannel, setIdChannel] = useState('');
 
   const handlelinkedInLogin = () => {
     const params = new URLSearchParams({
@@ -38,12 +38,18 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) =
 
   }
 
+
+
+
+  //facebook work
   const myPageId = localStorage.getItem("pageId");
   const openFacebookPage = () => {
     const url = `https://www.facebook.com/${myPageId}`;
     window.open(url, "_blank"); // open in a new tab
   };
 
+
+  //instagram work
   const openInstagram = () => {
     window.open("https://www.instagram.com/", "_blank");
   }
@@ -54,10 +60,14 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) =
     localStorage.removeItem("igId");
   }
 
+
+  
   const linkedInToken = localStorage.getItem("myaccessToken");
   const turnOut = () =>{
     localStorage.removeItem("myaccessToken");
   }
+
+
 
 
   const connectYoutube = () => {
