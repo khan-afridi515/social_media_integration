@@ -21,14 +21,18 @@ const App = () => {
       fbProvider.addScope("pages_manage_posts");
       fbProvider.addScope("instagram_basic");
       fbProvider.addScope("instagram_content_publish");
+
+
+      console.log("Work starting...");
   
+      // const myResult = await signInWithPopup(myAuth, fbProvider);
       const myResult = await signInWithPopup(myAuth, fbProvider);
       const secret = FacebookAuthProvider.credentialFromResult(myResult);
   
       if (!secret) return console.log("Credential missing");
   
       const giveToken = secret.accessToken;
-      console.log("User token:", giveToken);
+      
   
       // Use the Page ID from debugger (your "Original Product")
       // this id is taken from access token debugger where pages_show_list : 930537653472224
@@ -40,7 +44,7 @@ const App = () => {
       );
   
       const pageData = await response.json();
-      console.log("Page data:", pageData);
+     
   
       if (!pageData || !pageData.access_token) {
         return console.log("Cannot access Page token");
@@ -52,7 +56,7 @@ const App = () => {
   
       if (pageData.instagram_business_account) {
         const igId = pageData.instagram_business_account.id;
-        console.log("Connected Instagram Business Account ID:", igId);
+        
         localStorage.setItem("igId", igId);
       }
   
@@ -61,7 +65,8 @@ const App = () => {
       console.log(err);
     }
   };
-  
+
+
 
   useEffect(()=>{
     const getId = localStorage.getItem("igId");
@@ -71,12 +76,11 @@ const App = () => {
   const InstaConnect = () =>{
     const instaId = localStorage.getItem("idId");
     setMyIgId(instaId)
-    console.log("This is my instagram account");
+    
   }
 
   return (
     <div>
-      {/* <Join givePages={showPages}  Instawork={InstaConnect} igId={MyIgId} /> */}
       <Join2 givePages={showPages}  Instawork={InstaConnect} igId={MyIgId} />
     </div>
   )

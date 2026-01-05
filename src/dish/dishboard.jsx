@@ -118,13 +118,13 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) =
               </div>
             </div>
 
-            <div className='md:w-[23%] sm:w-[31%] w-[48%] lex flex-col gap-1'>
+            <div className='md:w-[23%] sm:w-[31%] w-[48%] flex flex-col gap-1'>
                <img src="platform/linkedIn.png" className="w-full h-40 object-cover rounded-md cursor-pointer" alt="" onClick={openLinkedIn}/>
                <p className='font-bold text-sm'>LinkedIn</p>
                <p className='text-sm'>Connect your LinkedIn account</p>
                <div className='flex gap-1'>
                <button className={linkedInToken ? 'text-sm px-1 py-1 bg-red-700 w-25 rounded-md text-white cursor-pointer':'text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white cursor-pointer'} onClick={handlelinkedInLogin}>{linkedInToken? "Connected":"Connect"}</button>
-               <button className='text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white cursor-pointer' onClick={linkedInPageLogin}>Connecting</button>
+               {/* <button className='text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white cursor-pointer' onClick={linkedInPageLogin}>Connecting</button> */}
                <button className='text-sm px-1 py-1 bg-green-700 w-25 rounded-md text-white cursor-pointer' onClick={turnOut}>Disconnect</button>
                </div>
                
