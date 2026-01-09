@@ -50,8 +50,11 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) =
 
 
   //instagram work
+  const InstagramUsername = localStorage.getItem('igUsername');
+  console.log(InstagramUsername);
   const openInstagram = () => {
-    window.open("https://www.instagram.com/", "_blank");
+    window.open(`https://www.instagram.com/${InstagramUsername}/`, "_blank");
+
   }
 
   const moveOut = () => {
