@@ -2,7 +2,7 @@ import React, { use, useRef, useState } from 'react'
 import { Link } from 'react-router-dom';
 
 
-const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) => {
+const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel, myFaceId, myInstaId}) => {
 
   const [IdChannel, setIdChannel] = useState('');
   
@@ -29,8 +29,6 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) =
       response_type: 'code',
       client_id : "778j586i0xg19p",
       redirect_uri : "http://localhost:3000/api/linkedin/callback",
-      // scope : 'r_organization_social r_organization_admin w_organization_social',
-      // scope : 'r_organization_admin',
       scope : 'r_organization_social rw_organization_admin w_organization_social',
 
     })
@@ -44,8 +42,13 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) =
   //facebook work
   const myPageId = localStorage.getItem("pageId");
   const openFacebookPage = () => {
-    const url = `https://www.facebook.com/${myPageId}`;
-    window.open(url, "_blank"); // open in a new tab
+    if(myPageId){
+      const url = `https://www.facebook.com/${myPageId}`;
+      window.open(url, "_blank"); // open in a new tab
+    }else{
+      alert("Facebook is not connected!");
+    }
+    
   };
 
 
@@ -53,16 +56,26 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) =
   const InstagramUsername = localStorage.getItem('igUsername');
   console.log(InstagramUsername);
   const openInstagram = () => {
-    window.open(`https://www.instagram.com/${InstagramUsername}/`, "_blank");
+    if(InstagramUsername){
+      window.open(`https://www.instagram.com/${InstagramUsername}/`, "_blank");
+    }else{
+      alert("Instagram is not connected!");
+    }
+   
 
   }
 
   const moveOut = () => {
     localStorage.removeItem("pageId");
     localStorage.removeItem("pageToken");
-    localStorage.removeItem("igId");
+    localStorage.removeItem("MypageData");
   }
 
+ const turnDown = () => {
+  localStorage.removeItem("igId");
+  localStorage.removeItem("igUsername");
+
+ }
 
   
   const linkedInToken = localStorage.getItem("myaccessToken");
@@ -117,7 +130,7 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel}) =
                <p className='text-sm'>Connect your Instagram account</p>
                <div className='flex gap-1'>
                <button className={IgIddigit ? 'text-sm px-1 py-1 bg-red-700 w-25 rounded-md text-white cursor-pointer':'text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white cursor-pointer'} onClick={myInsta}>{IgIddigit ? "Connected":"Connect"}</button>
-               <button className='text-sm px-1 py-1 bg-green-700 w-25 rounded-md text-white cursor-pointer' onClick={moveOut}>Disconnect</button>
+               <button className='text-sm px-1 py-1 bg-green-700 w-25 rounded-md text-white cursor-pointer' onClick={turnDown}>Disconnect</button>
               </div>
             </div>
 

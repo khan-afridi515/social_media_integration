@@ -10,7 +10,7 @@ import Login  from "./login";
 import ProtectedRouter from "./protectedRouter";
 
 
-const Childdern2 = ({ myPages, myInsta, igIdData }) => {
+const Childdern2 = ({ myPages, myInsta, igIdData , receiveFaceId, reciecveInstaId}) => {
   const storedData = localStorage.getItem("youtubeChannelData");
   const mystoredData = storedData ? JSON.parse(storedData) : null;
 
@@ -32,6 +32,8 @@ const Childdern2 = ({ myPages, myInsta, igIdData }) => {
               IgIddigit={igIdData}
               channelData={mystoredData}
               finishChannel={removeYoutubeData}
+              myFaceId={receiveFaceId}
+              myInstaId={reciecveInstaId}
             /></ProtectedRouter>
           }
         />
