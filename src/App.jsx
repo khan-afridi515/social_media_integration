@@ -44,16 +44,12 @@ const App = () => {
       // const myResult = await signInWithPopup(myRecentAuth, recentfbProvider);
 
       const secret = FacebookAuthProvider.credentialFromResult(myResult);
-
-      console.log("These are my secrets:", secret);
   
       if (!secret) return console.log("Credential missing");
   
       const giveToken = secret.accessToken;
-      console.log("Access Token:", giveToken)
       
       const pageId = import.meta.env.VITE_PAGE_ID;
-      console.log('page', pageId);
   
       const response = await fetch(
         `https://graph.facebook.com/${pageId}?fields=id,name,access_token,instagram_business_account&access_token=${giveToken}`
@@ -87,8 +83,6 @@ const App = () => {
       
 // }
       
-      console.log("page token", pageAccessToken);
-      console.log("page id", pageData.id);
       
       console.log("Instagram account username", pageData.instagram_business_account.username);
   
@@ -135,15 +129,6 @@ const App = () => {
   alert("Please first connect facebook!");
 }
 
-
-
-    // if(instaId){
-    //   alert("Instagram connected successfully!")
-    // }else{
-    //   alert("Please first connect facebook!");
-    // }
-    // setMyIgId(instaId)
-    
   }
 
   return (

@@ -1,5 +1,7 @@
 import React, { use, useRef, useState } from 'react'
 import { Link } from 'react-router-dom';
+import { Youtube_BASE_URL } from '../youtube/youtub';
+
 
 
 const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel, myFaceId, myInstaId}) => {
@@ -17,7 +19,8 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel, my
     const params = new URLSearchParams({
       response_type: 'code',
       client_id : "78i6r8esrvn9db",
-      redirect_uri : "http://localhost:3000/api/linkedin/callback",
+      // redirect_uri : "http://localhost:3000/api/linkedin/callback",
+      redirect_uri : `${Youtube_BASE_URL}/api/linkedin/callback`,
       scope : 'openid profile email w_member_social',
     })
     window.location.href=`https://www.linkedin.com/oauth/v2/authorization?${params}`;
@@ -28,7 +31,8 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel, my
     const params = new URLSearchParams({
       response_type: 'code',
       client_id : "778j586i0xg19p",
-      redirect_uri : "http://localhost:3000/api/linkedin/callback",
+      // redirect_uri : "http://localhost:3000/api/linkedin/callback",
+      redirect_uri : `${Youtube_BASE_URL}/api/linkedin/callback`,
       scope : 'r_organization_social rw_organization_admin w_organization_social',
 
     })
@@ -87,7 +91,8 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel, my
 
 
   const connectYoutube = () => {
-    window.location.href = "http://localhost:3000/api/youtube/connectedYoutube";
+    // window.location.href = "http://localhost:3000/api/youtube/connectedYoutube";
+    window.location.href = `${Youtube_BASE_URL}/api/youtube/connectedYoutube`;
   }
 
   const showRef = useRef();

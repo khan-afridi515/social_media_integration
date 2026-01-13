@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from  'axios';
+import { Face_URL } from '../facebook/facebok';
+import { Youtube_BASE_URL } from '../youtube/youtub';
 
 
 const Create = ({postIgId, myChannelData}) => {
@@ -45,7 +47,8 @@ const Create = ({postIgId, myChannelData}) => {
         if(facebook && myText && facebookPagetoken){
             
             console.log("Posted to Facebook:", myText , image);
-            const url = "http://localhost:3001/app/facebook/pagePost";
+            // const url = "http://localhost:3001/app/facebook/pagePost";
+            const url = `${Face_URL}/app/facebook/pagePost`;
 
     const formData = new FormData();
     formData.append("content", myText);
@@ -81,7 +84,8 @@ const Create = ({postIgId, myChannelData}) => {
        
         const media = image || video;
         if(instagram && myText && postIgId && media){
-            const instaUrl = "http://localhost:3001/app/facebook/instagramPost";
+            // const instaUrl = "http://localhost:3001/app/facebook/instagramPost";
+            const instaUrl = `${Face_URL}/app/facebook/instagramPost`;
             const instaFormData = new FormData();
             instaFormData.append("caption", myText);
             instaFormData.append("igUserId", postIgId);
@@ -110,7 +114,8 @@ const Create = ({postIgId, myChannelData}) => {
         
         if(linkedIn && myText && linkedInToken){
             console.log("Posted to LinkedIn:", myText, image);
-            const shareUrl = "http://localhost:3000/api/linkedin/sharePost";
+            // const shareUrl = "http://localhost:3000/api/linkedin/sharePost";
+            const shareUrl = `${Youtube_BASE_URL}/api/linkedin/sharePost`;
 
             const newformData = new FormData();
 
@@ -137,7 +142,8 @@ const Create = ({postIgId, myChannelData}) => {
 
 
         if(youtube && myText && video){
-            const uploadUrl = "http://localhost:3000/api/youtube/shareVideo";
+            // const uploadUrl = "http://localhost:3000/api/youtube/shareVideo";
+            const uploadUrl = `${Youtube_BASE_URL}/api/youtube/shareVideo`;
 
             const uploadForm = new FormData();
 
