@@ -14,25 +14,32 @@ const Login = () => {
 
    const myData = {email : email,  password : pass}
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("Form submitted!");
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     console.log("Form submitted!");
         
       
-        axios.post(loginUrl, myData)
-        .then((res)=>{
+    //     axios.post(loginUrl, myData)
+    //     .then((res)=>{
           
-          res && alert("Login Successfull");
-          res && nav("/");
+    //       res && alert("Login Successfull");
+    //       res && nav("/");
           
-          localStorage.setItem("myLoginToken", res.data.token);
-        })
-        .catch((err)=>{
-          console.log(err)
-        })
+    //       // localStorage.setItem("myLoginToken", res.data.token);
+    //       localStorage.setItem("myLoginToken", "12345");
+    //     })
+    //     .catch((err)=>{
+    //       console.log(err)
+    //     })
 
-        setEmail("");
-        setPass("");
+    //     setEmail("");
+    //     setPass("");
+    // }
+
+    const handleSubmit = async (e) => {
+         e.preventDefault();
+          nav("/");
+
     }
 
     // localStorage.clear();

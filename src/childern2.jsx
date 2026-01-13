@@ -22,7 +22,7 @@ const Childdern2 = ({ myPages, myInsta, igIdData , receiveFaceId, reciecveInstaI
     <Routes>
       {/* WITH Navbar + Sidebar */}
       <Route element={<MainLayout />}>
-        <Route
+        {/* <Route
           path="/"
           element={
             <ProtectedRouter>
@@ -36,16 +36,38 @@ const Childdern2 = ({ myPages, myInsta, igIdData , receiveFaceId, reciecveInstaI
               myInstaId={reciecveInstaId}
             /></ProtectedRouter>
           }
+        /> */}
+
+
+<Route
+          path="/"
+          element={
+            
+            <Dish
+              facebookPages={myPages}
+              myInsta={myInsta}
+              IgIddigit={igIdData}
+              channelData={mystoredData}
+              finishChannel={removeYoutubeData}
+              myFaceId={receiveFaceId}
+              myInstaId={reciecveInstaId}
+            />
+          }
         />
-        <Route path="/create" element={<ProtectedRouter><Create postIgId={igIdData} myChannelData={mystoredData} /></ProtectedRouter>} />
-        <Route path="/view" element={<ProtectedRouter><View /></ProtectedRouter>} />
+
+        {/* <Route path="/create" element={<ProtectedRouter><Create postIgId={igIdData} myChannelData={mystoredData} /></ProtectedRouter>} /> */}
+        <Route path="/create" element={<Create postIgId={igIdData} myChannelData={mystoredData} />} />
+        {/* <Route path="/view" element={<ProtectedRouter><View /></ProtectedRouter>} /> */}
+        <Route path="/view" element={<View />} />
         
       </Route>
 
       {/* WITHOUT Navbar + Sidebar */}
       <Route element={<PlainLayout />}>
-        <Route path="/youtubeChanel" element={<ProtectedRouter><Chanel /></ProtectedRouter>} />
-        <Route path="/linked/work" element={<ProtectedRouter><Linked /></ProtectedRouter>} />
+        {/* <Route path="/youtubeChanel" element={<ProtectedRouter><Chanel /></ProtectedRouter>} /> */}
+        <Route path="/youtubeChanel" element={<Chanel />} />
+        {/* <Route path="/linked/work" element={<ProtectedRouter><Linked /></ProtectedRouter>} /> */}
+        <Route path="/linked/work" element={<Linked />} />
         <Route path="/login" element={<Login/>}/>
       </Route>
     </Routes>
