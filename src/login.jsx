@@ -14,35 +14,30 @@ const Login = () => {
 
    const myData = {email : email,  password : pass}
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     console.log("Form submitted!");
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("Form submitted!");
         
       
-    //     axios.post(loginUrl, myData)
-    //     .then((res)=>{
+        axios.post(loginUrl, myData)
+        .then((res)=>{
           
-    //       res && alert("Login Successfull");
-    //       res && nav("/");
+          res && alert("Login Successfull");
+          res && nav("/");
           
-    //       // localStorage.setItem("myLoginToken", res.data.token);
-    //       localStorage.setItem("myLoginToken", "12345");
-    //     })
-    //     .catch((err)=>{
-    //       console.log(err)
-    //     })
+          localStorage.setItem("myLoginToken", res.data.token);
+          
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
 
-    //     setEmail("");
-    //     setPass("");
-    // }
-
-    const handleSubmit = async (e) => {
-         e.preventDefault();
-          nav("/");
-
+        setEmail("");
+        setPass("");
     }
 
-    // localStorage.clear();
+    
+
   return (
     <div className='w-full h-[100vh] flex justify-center items-center'>
       <div className='w-90 border-1 border rounded-md py-8 px-5'>
