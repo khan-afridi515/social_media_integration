@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import {useNavigate} from "react-router-dom";
+import { Youtube_BASE_URL } from '../youtube/youtub';
 
 
 const Linked = () => {
@@ -18,7 +19,8 @@ const Linked = () => {
       
     //Send code to backend to get user info
     axios
-      .get("http://localhost:3000/api/linkedin/sendToken",{
+      // .get("http://localhost:3000/api/linkedin/sendToken",{
+      .get(`${Youtube_BASE_URL}/api/linkedin/sendToken`,{
         withCredentials: true
       })
 

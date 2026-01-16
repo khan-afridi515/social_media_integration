@@ -6,4 +6,4 @@ const ProtectedRouter = ({children}) => {
   return myTokenLogin ? children : <Navigate to="/login" replace/>
 }
 
-export default ProtectedRouter
+export default ProtectedRouter;

@@ -16,12 +16,12 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel, my
 
 
   const handlelinkedInLogin = () => {
+    console.log("LinkedIn Client Id", import.meta.env.VITE_LINKEDIN_ID);
     const params = new URLSearchParams({
       response_type: 'code',
-      client_id : "78i6r8esrvn9db",
-      // redirect_uri : "http://localhost:3000/api/linkedin/callback",
-      redirect_uri : `${Youtube_BASE_URL}/api/linkedin/callback`,
-      scope : 'openid profile email w_member_social',
+      client_id : import.meta.env.VITE_LINKEDIN_ID,
+      redirect_uri : `${Youtube_BASE_URL}/api/linkedIn/callback`,
+      scope : 'openid profile email',
     })
     window.location.href=`https://www.linkedin.com/oauth/v2/authorization?${params}`;
   }
@@ -29,16 +29,24 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel, my
 
   const linkedInPageLogin = () => {
     const params = new URLSearchParams({
-      response_type: 'code',
-      client_id : "778j586i0xg19p",
-      // redirect_uri : "http://localhost:3000/api/linkedin/callback",
-      redirect_uri : `${Youtube_BASE_URL}/api/linkedin/callback`,
-      scope : 'r_organization_social rw_organization_admin w_organization_social',
+      response_type: "code",
+      client_id: import.meta.env.VITE_LINKEDIN_ID,
+      redirect_uri: `${Youtube_BASE_URL}/api/linkedIn/callback`,
+      scope: [
+        "openid",
+        "profile",
+        "email",
+        "r_organization_social",
+        "rw_organization_admin",
+        "w_organization_social"
+      ].join(" "),
+      state: crypto.randomUUID()
+    });
+  
+    window.location.href =
+      `https://www.linkedin.com/oauth/v2/authorization?${params.toString()}`;
 
-    })
-    window.location.href=`https://www.linkedin.com/oauth/v2/authorization?${params}`;
-
-  }
+}
 
 
 
@@ -91,7 +99,6 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel, my
 
 
   const connectYoutube = () => {
-    // window.location.href = "http://localhost:3000/api/youtube/connectedYoutube";
     window.location.href = `${Youtube_BASE_URL}/api/youtube/connectedYoutube`;
   }
 
@@ -144,7 +151,7 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel, my
                <p className='font-bold text-sm'>LinkedIn</p>
                <p className='text-sm'>Connect your LinkedIn account</p>
                <div className='flex gap-1'>
-               <button className={linkedInToken ? 'text-sm px-1 py-1 bg-red-700 w-25 rounded-md text-white cursor-pointer':'text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white cursor-pointer'} onClick={handlelinkedInLogin}>{linkedInToken? "Connected":"Connect"}</button>
+               <button className={linkedInToken ? 'text-sm px-1 py-1 bg-red-700 w-25 rounded-md text-white cursor-pointer':'text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white cursor-pointer'} onClick={linkedInPageLogin}>{linkedInToken? "Connected":"Connect"}</button>
                {/* <button className='text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white cursor-pointer' onClick={linkedInPageLogin}>Connecting</button> */}
                <button className='text-sm px-1 py-1 bg-green-700 w-25 rounded-md text-white cursor-pointer' onClick={turnOut}>Disconnect</button>
                </div>
