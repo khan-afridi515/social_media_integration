@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Youtube_BASE_URL } from "./youtub";
+
 
 const Chanel = () => {
 
@@ -13,7 +15,7 @@ const Chanel = () => {
   },[])
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/youtube/gettingChannel")
+    axios.get(`${Youtube_BASE_URL}/api/youtube/gettingChannel`)
     .then((res) =>{
       console.log(res.data);
       console.log("My response", res.data);

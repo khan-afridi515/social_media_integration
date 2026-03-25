@@ -48,6 +48,8 @@ const App = () => {
       if (!secret) return console.log("Credential missing");
   
       const giveToken = secret.accessToken;
+
+      console.log("These are my tokens", giveToken);
       
       const pageId = import.meta.env.VITE_PAGE_ID;
   

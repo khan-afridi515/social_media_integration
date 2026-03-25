@@ -21,16 +21,12 @@ const Sidebar = () => {
           <p>Home</p>
         </div></Link>
 
-        <div className='py-1 px-2 flex gap-5 hover:bg-gray-200 transition-colors duration-200 cursor-pointer'>
-        <i className="fa-sharp fa-regular fa-bell text-[19px] mt-1"></i>
-          <p>Notifications</p>
-        </div>
+       
 
-        <div className='py-1 px-2 flex gap-5 hover:bg-gray-200 transition-colors duration-400 cursor-pointer'>
-        {/* <i className="fa-sharp fa-regular fa-bell text-[19px] mt-1"></i> */}
+      <Link to="/create"><div className='py-1 px-2 flex gap-5 hover:bg-gray-200 transition-colors duration-400 cursor-pointer'>
         <img src="post.png" className='w-5 h-5 mt-1' alt="" />
           <p>Posts</p>
-        </div>
+        </div></Link>
 
       </div>
     </div>

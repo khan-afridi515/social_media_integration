@@ -1,4 +1,4 @@
-import React, { use, useRef, useState } from 'react'
+import React, { use, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { Youtube_BASE_URL } from '../youtube/youtub';
 
@@ -7,6 +7,49 @@ import { Youtube_BASE_URL } from '../youtube/youtub';
 const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel, myFaceId, myInstaId}) => {
 
   const [IdChannel, setIdChannel] = useState('');
+
+  const [arr, setArr] = useState([
+               {platform:"facebook",
+                time : Date.now()},
+               {
+                plaform: "instagram",
+                time : Date.now()-120000
+               },
+               {
+                 platform : "linkedIn",
+                 time : Date.now()-180000
+               },
+               {
+                 platform : "youtube",
+                 time : Date.now()-50000
+               },
+               {
+                 platform : "twitter",
+                 time : Date.now()
+               }
+              ]);
+
+
+              const getTimeOut = (time) => {
+                const seconds = Math.floor((Date.now() - time) / 1000);
+
+                if (seconds < 60) return `${seconds} sec ago`;
+
+                  const minutes = Math.floor(seconds / 60);
+                  if (minutes < 60) return `${minutes} min ago`;
+                
+                  const hours = Math.floor(minutes / 60);
+                  return `${hours} hr ago`;
+              }
+
+
+              useEffect(() => {
+                const interval = setInterval(() => {
+                  setArr(prev => [...prev]); // trigger re-render
+                }, 60000); // every 1 minute
+              
+                return () => clearInterval(interval);
+              }, []);
   
 
   const  openLinkedIn = () => {
@@ -190,37 +233,21 @@ const Dish = ({facebookPages, myInsta, IgIddigit, channelData, finishChannel, my
         <div className='py-3'>
             <h1 className='py-3 text-xl font-bold'>Activity Feeds</h1>
             <div className='flex flex-col'>
-            <div className='flex gap-2 py-2'>
+
+            {
+              arr.map((item)=>{
+                return(
+                  <div className='flex gap-2 py-2'>
               <img src="women.png" className='w-10 h-10' alt="" />
               <div className='flex flex-col '>
-                <p>Posted to Facebook</p>
-                <p>Just now</p>
+                <p>Posted to {item.plaform}</p>
+                <p>{getTimeOut(item.time)}</p>
               </div>
             </div>
-
-            <div className='flex gap-2 py-2'>
-              <img src="post/women3.png" className='w-10 h-10' alt="" />
-              <div className='flex flex-col '>
-                <p>Posted to linkedIn</p>
-                <p>Just now</p>
-              </div>
-            </div>
-
-            <div className='flex gap-2 py-2'>
-              <img src="post/women1.png" className='w-10 h-10' alt="" />
-              <div className='flex flex-col '>
-                <p>Posted to Youtube</p>
-                <p>Just now</p>
-              </div>
-            </div>
-
-            <div className='flex gap-2 py-2'>
-              <img src="post/women2.png" className='w-10 h-10' alt="" />
-              <div className='flex flex-col '>
-                <p>Posted to Instagram</p>
-                <p>Just now</p>
-              </div>
-            </div>
+                )
+              })
+            }
+            
 
             <div className='py-2 flex justify-end px-4'>
               <Link to="/create"><button className='py-1 px-3 bg-blue-700 text-white rounded-md cursor-pointer'><span className='text-2xl font-bold'>+</span> Post Now</button></Link>

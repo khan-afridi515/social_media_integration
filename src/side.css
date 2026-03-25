@@ -2,3 +2,14 @@
     background-color: grey;
     transition:0.2s ease-in-out;
 }
+
+.side{
+    transition: 0.3s ease-in-out;
+    
+}
+
+.side:hover{
+    background-color: transparent;
+    color:black;
+    border: 2px solid black;
+}
