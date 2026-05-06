@@ -25,8 +25,8 @@ const Login = () => {
         .then((res)=>{
           
           res && alert("Login Successfull");
-          res && nav("/");
-          
+          // res && nav("/");
+          console.log(res.data.token);
           localStorage.setItem("myLoginToken", res.data.token);
           
         })

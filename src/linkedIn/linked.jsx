@@ -1,37 +1,40 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams, useSearchParams} from "react-router-dom";
 import { Youtube_BASE_URL } from '../youtube/youtub';
 
 
 const Linked = () => {
 
   const [myRes, setMyRes] = useState(null);
-  const navigate = useNavigate();
 
-  // if(myRes){
-  //   setTimeout(()=>{
-  //       navigate("/");
-  //   }, 3000)
-  // }
+  const token = localStorage.getItem("myLoginToken");
 
+  const [searchParams] = useSearchParams();
+    const id = searchParams.get("id");
+
+    
   useEffect(() => {
-      
-    //Send code to backend to get user info
-    axios
-      // .get("http://localhost:3000/api/linkedin/sendToken",{
-      .get(`${Youtube_BASE_URL}/api/linkedin/sendToken`,{
-        withCredentials: true
+
+    if(!id) return;
+
+      axios
+      .get(`${Youtube_BASE_URL}/api/linkedin/getData?id=${id}`,{
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+        
       })
 
       .then( (res)=>{
             console.log(res);
-            const token = res.data.token;
-            console.log("Token recieved:", res);
+            const token = res.data.accessToken;
+            console.log("Token recieved:", token);
 
-            setMyRes(res.data.token);
+            setMyRes(token);
 
-            localStorage.setItem("myaccessToken", res.data.token);
+            localStorage.setItem("myaccessToken", token);
 
              
       })

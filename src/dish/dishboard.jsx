@@ -4,19 +4,14 @@ import { Youtube_BASE_URL } from '../youtube/youtub';
 
 
 
-const Dish = ({ facebookPages, myInsta, IgIddigit, channelData, finishChannel, myFaceId, myInstaId }) => {
+const Dish = ({ facebookPages, myInsta, IgIddigit, channelData, finishChannel,}) => {
 
   const [IdChannel, setIdChannel] = useState('');
-
-
-
-
 
   const [arr, setArr] = useState([]);
 
 
   useEffect(() => {
-    // fetch("http://localhost:3003/api/youtube/allActivities")
     fetch(`${Youtube_BASE_URL}/api/youtube/allActivities`)
       .then(res => res.json())
       .then(data => {
@@ -24,36 +19,6 @@ const Dish = ({ facebookPages, myInsta, IgIddigit, channelData, finishChannel, m
         
       });
   }, []);
-
-
-  // const getTimeOut = (time) => {
-  //   const now = new Date();
-  //   const diff = Math.floor((now - new Date(time)) / 1000);
-
-  //   if (diff < 60) return `${diff} sec ago`;
-
-  //   if (diff < 3600)
-  //     return `${Math.floor(diff / 60)} min ago`;
-
-  //   if (diff < 86400)
-  //     return `${Math.floor(diff / 3600)} hr ago`;
-
-  //   return `${Math.floor(diff / 86400)} day ago`;
-  // };
-
-
-  // const getTimeOut = (time) => {
-  //   const now = Date.now(); // better
-  //   const created = new Date(time).getTime();
-  
-  //   const diff = Math.floor((now - created) / 1000);
-  
-  //   if (diff < 60) return `${diff} sec ago`;
-  //   if (diff < 3600) return `${Math.floor(diff / 60)} min ago`;
-  //   if (diff < 86400) return `${Math.floor(diff / 3600)} hr ago`;
-  
-  //   return `${Math.floor(diff / 86400)} day ago`;
-  // };
 
 
   const [now, setNow] = useState(Date.now());
@@ -99,12 +64,14 @@ const Dish = ({ facebookPages, myInsta, IgIddigit, channelData, finishChannel, m
 
 
   const handlelinkedInLogin = () => {
-    console.log("LinkedIn Client Id", import.meta.env.VITE_LINKEDIN_ID);
+    const getLoginToken = localStorage.getItem("myLoginToken");
+
     const params = new URLSearchParams({
       response_type: 'code',
       client_id: import.meta.env.VITE_LINKEDIN_ID,
       redirect_uri: `${Youtube_BASE_URL}/api/linkedIn/callback`,
-      scope: 'openid profile email',
+      scope: 'openid profile email w_member_social r_liteprofile',
+      state: getLoginToken
     })
     window.location.href = `https://www.linkedin.com/oauth/v2/authorization?${params}`;
   }
@@ -174,10 +141,11 @@ const Dish = ({ facebookPages, myInsta, IgIddigit, channelData, finishChannel, m
 
 
   const linkedInToken = localStorage.getItem("myaccessToken");
+
+  console.log("mylinkedIntoken", linkedInToken);
   const turnOut = () => {
     localStorage.removeItem("myaccessToken");
   }
-
 
 
 
@@ -240,7 +208,7 @@ const Dish = ({ facebookPages, myInsta, IgIddigit, channelData, finishChannel, m
               <p className='font-bold text-sm'>LinkedIn</p>
               <p className='text-sm'>Connect your LinkedIn account</p>
               <div className='flex gap-1'>
-                <button className={linkedInToken ? 'text-sm px-1 py-1 bg-red-700 w-25 rounded-md text-white cursor-pointer' : 'text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white cursor-pointer'} onClick={linkedInPageLogin}>{linkedInToken ? "Connected" : "Connect"}</button>
+                <button className={linkedInToken ? 'text-sm px-1 py-1 bg-red-700 w-25 rounded-md text-white cursor-pointer' : 'text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white cursor-pointer'} onClick={handlelinkedInLogin}>{linkedInToken ? "Connected" : "Connect"}</button>
                 {/* <button className='text-sm px-1 py-1 bg-blue-700 w-25 rounded-md text-white cursor-pointer' onClick={linkedInPageLogin}>Connecting</button> */}
                 <button className='text-sm px-1 py-1 bg-green-700 w-25 rounded-md text-white cursor-pointer' onClick={turnOut}>Disconnect</button>
               </div>
@@ -278,31 +246,43 @@ const Dish = ({ facebookPages, myInsta, IgIddigit, channelData, finishChannel, m
 
           </div>
 
-          <div className='py-3'>
-            <h1 className='py-3 text-xl font-bold'>Activity Feeds</h1>
+<div className='py-3'>
+  <h1 className='py-3 text-xl font-bold'>Activity Feeds</h1>
+  <div className='flex flex-col'>
+
+    {
+      arr.length === 0 ? (
+        <p className='text-gray-500 text-center py-5'>
+          No activity found. Start by creating a post 🚀
+        </p>
+      ) : (
+        arr.map((item) => (
+          <div className='flex gap-2 py-2' key={item._id}>
+            <img
+              src={icons[item.platform]}
+              className='w-10 h-10 rounded-full'
+              alt=""
+            />
+
             <div className='flex flex-col'>
-
-              {
-                arr.map((item) => (
-                  <div className='flex gap-2 py-2' key={item._id}>
-                    <img src={icons[item.platform]} className='w-10 h-10 rounded-full' alt="" />
-
-                    <div className='flex flex-col'>
-                      <p>Posted to {item.platform}</p>
-                      <p>{getTimeOut(item.createdAt)}</p>
-                    </div>
-                  </div>
-                ))
-              }
-
-
-              <div className='py-2 flex justify-end px-4'>
-                <Link to="/create"><button className='py-1 px-3 bg-blue-700 text-white rounded-md cursor-pointer'><span className='text-2xl font-bold'>+</span> Post Now</button></Link>
-              </div>
-
+              <p>Posted to {item.platform}</p>
+              <p>{getTimeOut(item.createdAt)}</p>
             </div>
-
           </div>
+        ))
+      )
+    }
+
+    <div className='py-2 flex justify-end px-4'>
+      <Link to="/create">
+        <button className='py-1 px-3 bg-blue-700 text-white rounded-md cursor-pointer'>
+          <span className='text-2xl font-bold'>+</span> Post Now
+        </button>
+      </Link>
+    </div>
+
+  </div>
+</div>
 
         </div>
 

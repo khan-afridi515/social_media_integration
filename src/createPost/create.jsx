@@ -111,13 +111,15 @@ const Create = ({postIgId, myChannelData}) => {
 
         
         if(linkedIn && myText && linkedInToken){
-            console.log("Posted to LinkedIn:", myText, image);
-            const shareUrl = `${Youtube_BASE_URL}/api/linkedin/sharePost`;
+           
+            const shareUrl = `${Youtube_BASE_URL}/api/linkedIn/postAccount`;
 
             const newformData = new FormData();
 
-            newformData.append("content", myText);
-            newformData.append("image", image);
+            newformData.append("text", myText);
+            if (image) {
+              newformData.append("image", image); // can be image or video
+            }
             newformData.append("accessToken", linkedInToken);
 
 
@@ -210,21 +212,18 @@ const Create = ({postIgId, myChannelData}) => {
                 <textarea name="" type="text" value={myText} onChange={(e)=>setMyText(e.target.value)} className='oultine-none border border-1 p-2 sm:w-105 w-80 h-35' id=""></textarea>
         </div>
         <div className='px-3 flex gap-7'>
-            <div className='flex flex-col gap-1 justify-center cursor-pointer' onClick={handleImageClick}>
+            <div className='relative flex flex-col gap-1 justify-center cursor-pointer' onClick={handleImageClick}>
                 <img src="posted/folder.png" className="w-9 h-9 rounded-ful" alt="" />
                 <input type="file" ref={fileInputRef} onChange={(e)=>setImage(e.target.files[0])} className='hidden' accept="image/*" />
                 <p className='text-sm'>Image</p>
+                {image && <p className='rounded-full text-sm bg-red-500 text-white flex justify-center items-center w-4 h-4 absolute top-0 right-0 text-center'>1</p>}
             </div>
 
-            <div className='flex flex-col gap-1 justify-center' onClick={handleVideo}>
+            <div className='relative flex flex-col gap-1 justify-center' onClick={handleVideo}>
                 <img src="posted/pause.png" className="w-9 h-9 rounded-ful" alt="" />
                 <input type="file" accept="video/*" ref={videoInputRef} onChange={(e)=>setVideo(e.target.files[0])} className='hidden'/>
                 <p className='text-sm'>Videos</p>
-            </div>
-
-            <div className='flex flex-col gap-1 justify-center'>
-                <img src="posted/smile.png" className="w-9 h-9 rounded-ful" alt="" />
-                <p className='text-sm'>Emogi</p>
+                {video && <p className='rounded-full text-sm bg-red-500 text-white flex justify-center items-center w-4 h-4 absolute top-0 right-0 text-center'>1</p>}
             </div>
 
           
@@ -289,7 +288,7 @@ const Create = ({postIgId, myChannelData}) => {
         <div className='w-full flex gap-2'>
           <div className='w-[49%]'>
           <label htmlFor="" className='text-sm'>Privacy</label>
-            <select name="" id="" value={privacyStatus} onChange={(e)=>setPrivacyStatus(e.target.value)}className='border border-1 p-1 w-full'>
+            <select name="" id="" value={privacyStatus} onChange={(e)=>setPrivacyStatus(e.target.value)} className='border border-1 p-1 w-full'>
               <option value="private">Private</option>
               <option value="public">Public</option>
               <option value="unlisted">Unlisted</option>
